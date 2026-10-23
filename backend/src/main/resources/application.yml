@@ -9,10 +9,18 @@ spring:
   application:
     name: cognitive-platform-backend
   datasource:
-    url: ${DB_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:cognitive_platform}?createDatabaseIfNotExist=${DB_CREATE_IF_NOT_EXISTS:false}&allowPublicKeyRetrieval=true&serverTimezone=UTC&sslMode=${DB_SSL_MODE:PREFERRED}&enabledTLSProtocols=${DB_TLS_PROTOCOLS:TLSv1.2,TLSv1.3}}
+    url: ${DB_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:4000}/${DB_NAME:test}?createDatabaseIfNotExist=${DB_CREATE_IF_NOT_EXISTS:false}&allowPublicKeyRetrieval=true&serverTimezone=UTC&sslMode=${DB_SSL_MODE:VERIFY_IDENTITY}&enabledTLSProtocols=${DB_TLS_PROTOCOLS:TLSv1.2,TLSv1.3}}
     username: ${DB_USER:root}
     password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 20000
+      initialization-fail-timeout: 20000
+      validation-timeout: 5000
+      max-lifetime: 1800000
+      idle-timeout: 600000
   jpa:
     hibernate:
       ddl-auto: validate
@@ -59,3 +67,10 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha
+
+logging:
+  level:
+    root: INFO
+    com.zaxxer.hikari: DEBUG
+    org.flywaydb: DEBUG
+    com.cognitiveplatform: DEBUG
