@@ -2,16 +2,19 @@ services:
   - type: web
     name: neuro-playy-backend
     env: docker
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    dockerfilePath: Dockerfile
     plan: free
     autoDeploy: true
     healthCheckPath: /api-docs
     envVars:
       - key: PORT
         value: 8080
-      - key: DB_URL
+      - key: DB_HOST
         sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_NAME
+        value: cognitive_platform
       - key: DB_USER
         sync: false
       - key: DB_PASSWORD

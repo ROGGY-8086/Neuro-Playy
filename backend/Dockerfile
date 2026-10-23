@@ -2,12 +2,11 @@
 FROM maven:3.9.9-eclipse-temurin-17-alpine AS builder
 WORKDIR /app
 
-# Copy pom.xml and download dependencies
+# Copy pom.xml and source code
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
-
-# Copy source code and build jar
 COPY src ./src
+
+# Build production jar
 RUN mvn clean package -DskipTests -B
 
 # Runtime Stage
@@ -24,9 +23,9 @@ COPY --from=builder /app/target/*.jar app.jar
 # Expose default port
 EXPOSE 8080
 
-# Environment variables with sensible defaults
+# Environment variables
 ENV PORT=8080
 ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC"
 
-# Launch Spring Boot with dynamic PORT from hosting environment
+# Launch Spring Boot with dynamic PORT from hosting platform
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
