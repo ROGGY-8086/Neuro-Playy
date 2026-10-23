@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-parchment: #F4F3EE;
+    --border-ink: #121316;
+  }
+
+  body {
+    background-color: #F4F3EE;
+    color: #0E0F12;
+    overflow-x: hidden;
+  }
+
+  /* Architectural grid backdrop helper */
+  .grid-draft-bg {
+    background-image: 
+      linear-gradient(to right, rgba(20, 20, 20, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 20, 20, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* Custom interactive pill styling */
+.pill-badge {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium border border-ink-900/30 uppercase tracking-wider bg-white/70;
+}
+
+.brutal-card {
+  @apply bg-white border-2 border-ink-950 rounded-2xl shadow-brutal transition-all duration-150 hover:-translate-y-0.5 hover:shadow-brutal-lg;
+}
+
+.brutal-btn {
+  @apply inline-flex items-center justify-center font-mono font-semibold tracking-wide uppercase transition-all duration-150 active:translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+/* Custom crisp scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F3EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #D5D7DF;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9092A0;
+}

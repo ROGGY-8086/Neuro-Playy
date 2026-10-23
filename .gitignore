@@ -1,0 +1,53 @@
+# ==========================================
+# Neuro Playy — Root .gitignore
+# ==========================================
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment & Secrets
+.env
+.env.*
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Node / Frontend Build Artifacts
+node_modules/
+dist/
+dist-ssr/
+capstone/node_modules/
+capstone/dist/
+capstone/dist-ssr/
+
+# Java / Maven Build Artifacts
+target/
+backend/target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+backend/uploads/
+backend/target/
+
+# Local Workspace Items & Non-Project Files
+maze_solver/
+skillverify/
+utility-cost-analyzer/
+gcp-conference-site/
+venv/
+files/
+.pytest_cache/
+*.pages
+asian_national_animals.html
+hiring (1).csv
+run.py

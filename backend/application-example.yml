@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cognitive_platform?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: cognitive_user
+    password: cognitive_secure_password_replace_me
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+app:
+  registration:
+    enabled: true
+  jwt:
+    secret: YOUR_BASE64_256BIT_SECRET_HERE
+    expiration-ms: 86400000
+  cors:
+    allowed-origins: http://localhost:5173,http://localhost:3000
+  storage:
+    upload-dir: uploads/media
