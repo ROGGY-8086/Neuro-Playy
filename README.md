@@ -1,5 +1,4 @@
 # Neuro Playy — Cognitive Gaming & Memory Assistance Platform
-
 [![Spring Boot](https://img.shields.io/badge/Backend-Spring%20Boot%203.4.1-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![MySQL](https://img.shields.io/badge/Database-MySQL%209.6-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
