@@ -13,12 +13,15 @@ RUN mvn clean package -DskipTests -B
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
-# Create non-root user for security
-RUN addgroup --system spring && adduser --system --ingroup spring spring
+# Create non-root user for security and ensure storage directory permissions
+RUN addgroup --system spring && adduser --system --ingroup spring spring \
+    && mkdir -p /app/uploads/media \
+    && chown -R spring:spring /app
+
 USER spring:spring
 
 # Copy compiled jar from builder
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder --chown=spring:spring /app/target/*.jar app.jar
 
 # Expose default port
 EXPOSE 8080

@@ -48,15 +48,23 @@ public class LocalDiskFileStorageService implements FileStorageService {
             @Value("${app.storage.upload-dir:uploads/media}") String uploadDir,
             @Value("${app.storage.max-image-size-bytes:5242880}") long maxImageSizeBytes,
             @Value("${app.storage.max-audio-size-bytes:10485760}") long maxAudioSizeBytes) {
-        this.rootLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path path = Paths.get(uploadDir).toAbsolutePath().normalize();
         this.maxImageSizeBytes = maxImageSizeBytes;
         this.maxAudioSizeBytes = maxAudioSizeBytes;
 
         try {
-            Files.createDirectories(this.rootLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage directory at " + uploadDir, e);
+            Files.createDirectories(path);
+        } catch (Exception e) {
+            log.warn("Could not initialize storage directory at {}, falling back to temp directory: {}", uploadDir, e.getMessage());
+            path = Paths.get(System.getProperty("java.io.tmpdir"), "neuro-playy-uploads").toAbsolutePath().normalize();
+            try {
+                Files.createDirectories(path);
+            } catch (IOException ex) {
+                log.error("Failed to initialize fallback storage directory", ex);
+                throw new RuntimeException("Could not initialize storage directory", ex);
+            }
         }
+        this.rootLocation = path;
     }
 
     @Override

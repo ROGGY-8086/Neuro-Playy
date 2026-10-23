@@ -49,7 +49,7 @@ app:
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000,https://capstone-liart-pi.vercel.app}
   storage:
-    upload-dir: ${UPLOAD_DIR:uploads/media}
+    upload-dir: ${UPLOAD_DIR:/tmp/uploads/media}
     max-image-size-bytes: 5242880 # 5 MB
     max-audio-size-bytes: 10485760 # 10 MB
   difficulty:
