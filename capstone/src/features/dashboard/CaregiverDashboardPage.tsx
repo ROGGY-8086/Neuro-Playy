@@ -235,10 +235,10 @@ export const CaregiverDashboardPage: React.FC = () => {
       const res = await ApiService.generateLinkCode(selectedProfileId);
       playSuccess();
       setPatientLoginInfo((prev) => ({
+        ...prev,
         hasLogin: false,
         activeCode: res.code,
         codeExpiresAt: res.expiresAt,
-        ...prev,
       }));
     } catch (err) {
       console.warn('Could not generate link code:', err);
