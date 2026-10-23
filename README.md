@@ -9,7 +9,7 @@
 
 ---
 
-## 🏛️ System ArchitecturE
+## 🏛️ System Architecture
 
 ```mermaid
 flowchart TD
