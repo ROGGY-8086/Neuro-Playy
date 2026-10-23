@@ -17,12 +17,31 @@ export const CaregiverLoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWarmingUp, setIsWarmingUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Throttling for repeated failed attempts
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [lockoutRemaining, setLockoutRemaining] = useState(0);
+
+  // Silently ping backend on mount to wake it up early
+  useEffect(() => {
+    ApiService.warmUpBackend();
+  }, []);
+
+  // Show helpful warming up indicator if request takes > 2.5s
+  useEffect(() => {
+    let timer: any;
+    if (isLoading) {
+      timer = setTimeout(() => {
+        setIsWarmingUp(true);
+      }, 2500);
+    } else {
+      setIsWarmingUp(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   // Countdown timer for throttling lockout
   useEffect(() => {
@@ -296,6 +315,14 @@ export const CaregiverLoginPage: React.FC = () => {
                 <span>{t.caregiverLoginButton}</span>
               )}
             </button>
+
+            {/* Cold start wake-up indicator */}
+            {isWarmingUp && (
+              <div className="p-3 bg-amber-50 border border-amber-200/80 rounded-xl text-xs text-amber-900 flex items-center gap-2.5 animate-pulse">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Connecting to cloud server (Render free tier wakes up in ~30s on first load)...</span>
+              </div>
+            )}
           </form>
 
           {/* Links */}

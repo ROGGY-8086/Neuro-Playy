@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ApiService } from './services/api';
 import { LandingChoicePage } from './features/landing/LandingChoicePage';
 import { PlayerActivityHome } from './features/player/PlayerActivityHome';
 import { CaregiverLoginPage } from './features/auth/CaregiverLoginPage';
@@ -12,6 +13,11 @@ import { DailyMemoryGamePage } from './features/game/DailyMemoryGamePage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 export function App() {
+  useEffect(() => {
+    // Silently wake up the Render backend container when the web app loads
+    ApiService.warmUpBackend();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

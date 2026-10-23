@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, ShieldCheck, Gamepad2, Volume2, VolumeX, AlertCircle, ArrowLeft, Loader2, Heart } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, Gamepad2, Volume2, VolumeX, AlertCircle, ArrowLeft, Loader2, Heart, Sparkles } from 'lucide-react';
 import { ApiService } from '../../services/api';
 import { useSound } from '../../hooks/useSound';
 import { translations, SupportedLanguage } from '../../i18n/translations';
@@ -17,8 +17,27 @@ export const PatientLoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWarmingUp, setIsWarmingUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Silently ping backend on mount to wake it up early
+  useEffect(() => {
+    ApiService.warmUpBackend();
+  }, []);
+
+  // Show helpful warming up indicator if request takes > 2.5s
+  useEffect(() => {
+    let timer: any;
+    if (isLoading) {
+      timer = setTimeout(() => {
+        setIsWarmingUp(true);
+      }, 2500);
+    } else {
+      setIsWarmingUp(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -226,6 +245,14 @@ export const PatientLoginPage: React.FC = () => {
                 <span>{t.patientLoginButton}</span>
               )}
             </button>
+
+            {/* Cold start wake-up indicator */}
+            {isWarmingUp && (
+              <div className="p-3 bg-amber-50 border border-amber-200/80 rounded-xl text-xs text-amber-900 flex items-center gap-2.5 animate-pulse">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Connecting to cloud server (Render free tier wakes up in ~30s on first load)...</span>
+              </div>
+            )}
           </form>
 
           {/* Links */}

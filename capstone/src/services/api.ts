@@ -92,6 +92,15 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const ApiService = {
+  // Silent background health ping to wake up cold Render instances
+  warmUpBackend() {
+    try {
+      fetch(`${BASE_URL}/health`, { method: 'GET', mode: 'cors' }).catch(() => {});
+    } catch {
+      // ignore
+    }
+  },
+
   // Token management
   setAuthToken(token: string) {
     localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
