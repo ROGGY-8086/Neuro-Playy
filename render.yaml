@@ -9,16 +9,20 @@ services:
     envVars:
       - key: PORT
         value: 8080
+      - key: DB_URL
+        sync: false
       - key: DB_HOST
         sync: false
       - key: DB_PORT
-        value: 3306
+        value: 4000
       - key: DB_NAME
-        value: cognitive_platform
+        value: test
       - key: DB_USER
         sync: false
       - key: DB_PASSWORD
         sync: false
+      - key: DB_SSL_MODE
+        value: VERIFY_IDENTITY
       - key: CORS_ORIGINS
         value: http://localhost:5173,https://capstone-liart-pi.vercel.app,https://neuro-playy.vercel.app
       - key: JWT_SECRET
