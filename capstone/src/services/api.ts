@@ -1,5 +1,5 @@
 /**
- * CAPSTONE API Service Layer
+ * Neuro Playy API Service Layer
  * 
  * Connected to Spring Boot REST backend at http://localhost:8080/api
  * with resilient offline fallback to local state if the server is starting up.
@@ -22,6 +22,8 @@ import {
   DailyGameStatus,
   DailyGameResult,
   DailyScoreHistory,
+  MemoryGameQuestion,
+  MemoryGameConfig,
 } from '../types';
 import {
   initialTelemetry,
@@ -579,5 +581,17 @@ export const ApiService = {
 
   async getDailyScoreHistory(): Promise<DailyScoreHistory> {
     return request<DailyScoreHistory>('/daily-game/scores');
+  },
+
+  // Memory Game Configuration API (Caregiver Managed)
+  async getMemoryGameConfig(profileId: number): Promise<MemoryGameConfig> {
+    return request<MemoryGameConfig>(`/profiles/${profileId}/memory-game-config`);
+  },
+
+  async saveMemoryGameConfig(profileId: number, questions: MemoryGameQuestion[]): Promise<MemoryGameConfig> {
+    return request<MemoryGameConfig>(`/profiles/${profileId}/memory-game-config`, {
+      method: 'PUT',
+      body: JSON.stringify(questions),
+    });
   },
 };

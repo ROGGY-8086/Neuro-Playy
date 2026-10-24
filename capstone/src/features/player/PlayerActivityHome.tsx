@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HeaderNavbar } from '../../components/common/HeaderNavbar';
 import { HeroSection } from '../hero/HeroSection';
 import { CognitivePillarsSection } from '../pillars/CognitivePillarsSection';
@@ -21,6 +21,7 @@ import { soundFx } from '../../utils/audio';
 import { useSpacebarInteraction } from '../../hooks/useSpacebarInteraction';
 
 export function PlayerActivityHome() {
+  const navigate = useNavigate();
   const currentUser = ApiService.getCurrentUser();
   const [telemetry, setTelemetry] = useState<TelemetryState>({
     recallBalance: 9.16,
@@ -51,7 +52,7 @@ export function PlayerActivityHome() {
 
   // Modal visibility states
   const [drillModalOpen, setDrillModalOpen] = useState(false);
-  const [selectedDrillType, setSelectedDrillType] = useState<PillarDrillType>('dual-n-back');
+  const [selectedDrillType, setSelectedDrillType] = useState<PillarDrillType>('inhibitory');
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [protocolDrawerOpen, setProtocolDrawerOpen] = useState(false);
@@ -134,7 +135,11 @@ export function PlayerActivityHome() {
     });
   };
 
-  const handleStartDrill = (type: PillarDrillType = 'dual-n-back') => {
+  const handleStartDrill = (type: PillarDrillType = 'daily-game') => {
+    if (type === 'daily-game') {
+      navigate('/daily-game');
+      return;
+    }
     setSelectedDrillType(type);
     setDrillModalOpen(true);
   };
@@ -171,7 +176,7 @@ export function PlayerActivityHome() {
         onUpdateSettings={handleUpdateSettings}
         onOpenSettingsModal={() => setSettingsModalOpen(true)}
         onOpenProtocolDrawer={() => setProtocolDrawerOpen(true)}
-        onStartDrill={() => handleStartDrill('dual-n-back')}
+        onStartDrill={() => handleStartDrill('daily-game')}
       />
 
       {/* Patient Welcome Banner */}
@@ -210,7 +215,7 @@ export function PlayerActivityHome() {
       <main className="flex-1">
         {/* Hero Section */}
         <HeroSection
-          onStartDrill={() => handleStartDrill('dual-n-back')}
+          onStartDrill={() => handleStartDrill('daily-game')}
           onOpenTutorial={() => setTutorialOpen(true)}
           onOpenSetupModal={() => setSettingsModalOpen(true)}
           reducedMotion={settings.reducedMotion}
@@ -242,7 +247,7 @@ export function PlayerActivityHome() {
 
         {/* Bottom CTA Section */}
         <BottomCTASection
-          onEnterLabDrill={() => handleStartDrill('dual-n-back')}
+          onEnterLabDrill={() => handleStartDrill('daily-game')}
           onScrollToTop={scrollToTop}
         />
       </main>
@@ -265,7 +270,7 @@ export function PlayerActivityHome() {
       <TutorialModal
         isOpen={tutorialOpen}
         onClose={() => setTutorialOpen(false)}
-        onStartFirstDrill={() => handleStartDrill('dual-n-back')}
+        onStartFirstDrill={() => handleStartDrill('daily-game')}
       />
 
       <SettingsPreferencesModal
@@ -287,13 +292,13 @@ export function PlayerActivityHome() {
       <PrivacyProtocolModal
         isOpen={privacyModalOpen}
         onClose={() => setPrivacyModalOpen(false)}
-        title="CAPSTONE PRIVACY PROTOCOL"
+        title="NEURO PLAYY PRIVACY PROTOCOL"
       />
 
       <PrivacyProtocolModal
         isOpen={protocolModalOpen}
         onClose={() => setProtocolModalOpen(false)}
-        title="CAPSTONE NEURO PROTOCOL & METHODOLOGY"
+        title="NEURO PLAYY NEURO PROTOCOL & METHODOLOGY"
       />
 
       {/* Toast Notifications */}

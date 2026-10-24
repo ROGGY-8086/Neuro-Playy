@@ -68,6 +68,7 @@ public class HealthController {
         Map<String, Long> dependentTables = new LinkedHashMap<>();
         String[] tables = {
                 "user_profiles", "relatives", "life_events", "personal_questions",
+                "memory_game_questions",
                 "daily_game_sessions", "daily_scores", "memory_items", "game_sessions",
                 "garden_states", "reminders", "caregiver_observations", "consent_records",
                 "patient_link_codes", "user_settings"
@@ -116,6 +117,7 @@ public class HealthController {
         result.put("unlinkedPatientProfiles", unlinkedPatients);
 
         // Step 2: Delete child records referencing player_profiles and users
+        int memQuestionsDeleted = jdbcTemplate.update("DELETE FROM memory_game_questions");
         int observationsDeleted = jdbcTemplate.update("DELETE FROM caregiver_observations");
         int consentRecordsDeleted = jdbcTemplate.update("DELETE FROM consent_records");
         int linkCodesDeleted = jdbcTemplate.update("DELETE FROM patient_link_codes");

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, RotateCcw, Award, CheckCircle2, AlertTriangle, Zap, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -21,6 +22,7 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
   onAddToast,
   onSessionComplete,
 }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<PillarDrillType>(drillType);
   const [drillState, setDrillState] = useState<'idle' | 'running' | 'completed'>('idle');
   const [score, setScore] = useState<number>(0);
@@ -62,10 +64,6 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
   const startTimeRef = useRef<number>(0);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Dual N-Back state
-  const [gridPosition, setGridPosition] = useState<number>(4);
-  const [currentLetter, setCurrentLetter] = useState<string>('A');
-  const [history, setHistory] = useState<{ pos: number; letter: string }[]>([]);
 
   // Inhibitory Stroop state
   const stroopColors = [
@@ -101,6 +99,11 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
   const handleStartDrill = () => {
     soundFx.playPing();
     const now = Date.now();
+    if (activeTab === 'daily-game') {
+      onClose();
+      navigate('/daily-game');
+      return;
+    }
     drillStartTimeRef.current = now;
     roundStartTimeRef.current = now;
     correctCountRef.current = 0;
@@ -114,8 +117,6 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
 
     if (activeTab === 'synaptic-velocity') {
       startVelocityRound();
-    } else if (activeTab === 'dual-n-back') {
-      startNBackRound([]);
     } else if (activeTab === 'inhibitory') {
       startStroopRound();
     } else if (activeTab === 'facial-associator') {
@@ -163,49 +164,7 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
     }
   };
 
-  // 2. Dual N-Back Logic
-  const startNBackRound = (currentHist: { pos: number; letter: string }[]) => {
-    roundStartTimeRef.current = Date.now();
-    const letters = ['A', 'B', 'C', 'X', 'Y', 'Z'];
-    const newPos = Math.floor(Math.random() * 9);
-    const newLetter = letters[Math.floor(Math.random() * letters.length)];
-    setGridPosition(newPos);
-    setCurrentLetter(newLetter);
-    soundFx.playClick();
-    setHistory([...currentHist, { pos: newPos, letter: newLetter }]);
-  };
 
-  const handleNBackAnswer = (matchType: 'position' | 'letter' | 'both' | 'none') => {
-    const reactionMs = Math.max(50, Date.now() - roundStartTimeRef.current);
-    reactionTimesRef.current.push(reactionMs);
-
-    const isPositionMatch = history.length >= 2 && history[history.length - 2]?.pos === gridPosition;
-    const isLetterMatch = history.length >= 2 && history[history.length - 2]?.letter === currentLetter;
-
-    let correct = false;
-    if (matchType === 'position' && isPositionMatch) correct = true;
-    else if (matchType === 'letter' && isLetterMatch) correct = true;
-    else if (matchType === 'both' && isPositionMatch && isLetterMatch) correct = true;
-    else if (matchType === 'none' && !isPositionMatch && !isLetterMatch) correct = true;
-
-    if (correct) {
-      correctCountRef.current += 1;
-      soundFx.playMatchChime();
-    } else {
-      soundFx.playSoftNoticeTone();
-    }
-
-    const gained = correct ? 250 : 50;
-    const updatedScore = score + gained;
-    setScore(updatedScore);
-
-    if (round < maxRounds) {
-      setRound((r) => r + 1);
-      startNBackRound(history);
-    } else {
-      finishDrill(updatedScore);
-    }
-  };
 
   // 3. Inhibitory Stroop Logic
   const startStroopRound = () => {
@@ -358,14 +317,14 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
           <button
             onClick={() => {
               soundFx.playClick();
-              setActiveTab('dual-n-back');
+              setActiveTab('daily-game');
               setDrillState('idle');
             }}
             className={`py-3 px-2 border-r border-ink-950/20 uppercase tracking-tight text-center cursor-pointer ${
-              activeTab === 'dual-n-back' ? 'bg-white text-ink-950 border-b-2 border-b-labYellow' : 'text-ink-600'
+              activeTab === 'daily-game' ? 'bg-white text-ink-950 border-b-2 border-b-labYellow' : 'text-ink-600'
             }`}
           >
-            01 Dual N-Back
+            01 Daily Memory
           </button>
           <button
             onClick={() => {
@@ -413,14 +372,14 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
                 <Zap className="w-8 h-8 text-labYellow fill-labYellow" />
               </div>
               <h3 className="font-display font-black text-2xl uppercase text-ink-950 mb-2">
-                {activeTab === 'dual-n-back' && 'DUAL N-BACK SPAN DRILL'}
+                {activeTab === 'daily-game' && 'DAILY MEMORY GAME'}
                 {activeTab === 'inhibitory' && 'INHIBITORY CONTROL DRILL'}
                 {activeTab === 'facial-associator' && 'FACIAL ASSOCIATOR DRILL'}
                 {activeTab === 'synaptic-velocity' && 'SYNAPTIC VELOCITY DRILL'}
               </h3>
               <p className="text-sm text-ink-600 max-w-md font-sans mb-8">
-                {activeTab === 'dual-n-back' &&
-                  'Track simultaneous visual position and auditory symbol markers. Test working memory retention across 5 successive stimulus loops.'}
+                {activeTab === 'daily-game' &&
+                  'Personalized memory questions created by your caregiver about loved ones, treasured milestones, and familiar places.'}
                 {activeTab === 'inhibitory' &&
                   'Suppress involuntary reading reflexes. Identify the actual font color while ignoring conflicting high-salience text triggers.'}
                 {activeTab === 'facial-associator' &&
@@ -434,7 +393,7 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
                 className="px-8 py-3.5 rounded-full bg-ink-950 text-white font-mono text-sm font-bold uppercase hover:bg-ink-800 shadow-brutal active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>COMMENCE 5-ROUND TEST</span>
+                <span>{activeTab === 'daily-game' ? 'LAUNCH DAILY MEMORY GAME' : 'COMMENCE 5-ROUND TEST'}</span>
               </button>
             </div>
           )}
@@ -496,54 +455,7 @@ export const LabDrillModal: React.FC<LabDrillModalProps> = ({
                 </div>
               )}
 
-              {activeTab === 'dual-n-back' && (
-                <div className="w-full flex flex-col items-center">
-                  <div className="text-xs font-mono text-ink-600 mb-3">
-                    FLASHING LETTER: <strong className="text-ink-950 text-base">{currentLetter}</strong>
-                  </div>
-                  {/* 3x3 Grid */}
-                  <div className="grid grid-cols-3 gap-2 w-48 h-48 mb-6">
-                    {Array.from({ length: 9 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={`rounded-xl border-2 border-ink-950 flex items-center justify-center transition-all ${
-                          i === gridPosition ? 'bg-labYellow font-black text-lg' : 'bg-parchment-100'
-                        }`}
-                      >
-                        {i === gridPosition && currentLetter}
-                      </div>
-                    ))}
-                  </div>
 
-                  {/* Dual n-back answer buttons */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-lg">
-                    <button
-                      onClick={() => handleNBackAnswer('position')}
-                      className="p-2.5 rounded-lg border-2 border-ink-950 bg-white hover:bg-parchment-200 text-xs font-mono font-bold uppercase cursor-pointer"
-                    >
-                      Position Match
-                    </button>
-                    <button
-                      onClick={() => handleNBackAnswer('letter')}
-                      className="p-2.5 rounded-lg border-2 border-ink-950 bg-white hover:bg-parchment-200 text-xs font-mono font-bold uppercase cursor-pointer"
-                    >
-                      Letter Match
-                    </button>
-                    <button
-                      onClick={() => handleNBackAnswer('both')}
-                      className="p-2.5 rounded-lg border-2 border-ink-950 bg-labYellow hover:bg-labYellow-hover text-xs font-mono font-bold uppercase cursor-pointer"
-                    >
-                      Both Match
-                    </button>
-                    <button
-                      onClick={() => handleNBackAnswer('none')}
-                      className="p-2.5 rounded-lg border-2 border-ink-950 bg-parchment-100 hover:bg-parchment-200 text-xs font-mono font-bold uppercase cursor-pointer"
-                    >
-                      No Match
-                    </button>
-                  </div>
-                </div>
-              )}
 
               {activeTab === 'inhibitory' && (
                 <div className="w-full flex flex-col items-center">

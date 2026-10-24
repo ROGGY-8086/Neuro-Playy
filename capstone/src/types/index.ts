@@ -15,7 +15,7 @@ export interface TelemetryState {
   isEscalating: boolean;
 }
 
-export type PillarDrillType = 'dual-n-back' | 'inhibitory' | 'facial-associator' | 'synaptic-velocity';
+export type PillarDrillType = 'daily-game' | 'inhibitory' | 'facial-associator' | 'synaptic-velocity';
 
 export interface CognitivePillar {
   id: string;
@@ -133,18 +133,37 @@ export interface ClientQuestion {
   id: number;
   questionText: string;
   category: string;
+  imageUrl?: string;
   options: string[];
   userAnswer?: string | null;
 }
 
+export interface MemoryGameQuestion {
+  id?: number;
+  questionText: string;
+  imageUrl?: string;
+  correctAnswer: string;
+  options: string[];
+  sortOrder?: number;
+}
+
+export interface MemoryGameConfig {
+  playerProfileId: number;
+  questions: MemoryGameQuestion[];
+  configured: boolean;
+}
+
 export interface DailyGameSession {
-  id: number;
+  id?: number;
+  sessionId?: number;
   gameDate: string;
-  completed: boolean;
+  completed?: boolean;
   totalQuestions: number;
-  answeredCount: number;
+  answeredCount?: number;
   currentScore?: number | null;
   questions: ClientQuestion[];
+  answerState?: Record<string, string>;
+  status?: string;
 }
 
 export interface DailyGameStatus {

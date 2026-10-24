@@ -38,7 +38,7 @@ export const SettingsPreferencesModal: React.FC<SettingsPreferencesModalProps> =
           <div className="flex items-center gap-2">
             <Sliders className="w-4 h-4 text-ink-950" />
             <span className="font-mono font-bold text-xs uppercase tracking-wider text-ink-950">
-              [ CAPSTONE LAB PREFERENCES & TELEMETRY ]
+              [ NEURO PLAYY LAB PREFERENCES & TELEMETRY ]
             </span>
           </div>
           <button

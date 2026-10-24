@@ -70,9 +70,9 @@ public class CompanionService {
     @Transactional(readOnly = true)
     public List<CognitivePillarDto> getPillars() {
         return Arrays.asList(
-                new CognitivePillarDto("pillar-1", "01", "DUAL N-BACK SPAN", "target",
-                        "Train simultaneous auditory and spatial buffers to keep three-tier data points ready in conscious memory without errors.",
-                        "RECALL GAIN", "+48.2%", "recall", "#10B981", "dual-n-back"),
+                new CognitivePillarDto("pillar-1", "01", "DAILY MEMORY GAME", "target",
+                        "Personalized memory questions tailored by your caregiver about loved ones, treasured milestones, and familiar places.",
+                        "RECALL GAIN", "+48.2%", "recall", "#10B981", "daily-game"),
                 new CognitivePillarDto("pillar-2", "02", "INHIBITORY CONTROL", "lightbulb",
                         "Suppress involuntary gaze tracking and notification triggers. Learn to ignore high-contrast distractions right as they spawn.",
                         "DISTRACTION LOSS", "-62.4%", "distraction", "#F5B800", "inhibitory"),
@@ -133,7 +133,7 @@ public class CompanionService {
     @Transactional(readOnly = true)
     public List<CohortTestimonialDto> getCohortTestimonials() {
         return Arrays.asList(
-                new CohortTestimonialDto("test-1", "I used to open browser tabs and instantly forget why. Two weeks into 10-day CAPSTONE and the cognitive reset is completely gone.", "DR. AMIE THORNE", "Design Systems Architect", "AT", "#F5B800", 42, 14200),
+                new CohortTestimonialDto("test-1", "I used to open browser tabs and instantly forget why. Two weeks into 10-day Neuro Playy and the cognitive reset is completely gone.", "DR. AMIE THORNE", "Design Systems Architect", "AT", "#F5B800", 42, 14200),
                 new CohortTestimonialDto("test-2", "The doodle scenarios mixed with hard neuro-drills pushes working memory harder than clinical desktop software.", "ELENA LIN", "Chief Prod. Officer", "EL", "#D5D7DF", 19, 11850),
                 new CohortTestimonialDto("test-3", "The fast-paced test teaches you how to ignore phone-pick focus. You literally feel the relief when you dispell distractions.", "BRYON D’SOUZA", "ER Physician", "BD", "#F5B800", 31, 18600)
         );

@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface PlayerProfileRepository extends JpaRepository<PlayerProfile, Long> {
     List<PlayerProfile> findAllByCaregiverId(Long caregiverId);
     Optional<PlayerProfile> findByIdAndCaregiverId(Long id, Long caregiverId);
+    Optional<PlayerProfile> findTopByCaregiverIdOrderByIdAsc(Long caregiverId);
 }

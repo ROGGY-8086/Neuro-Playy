@@ -59,7 +59,7 @@ export const CognitivePillarsSection: React.FC<CognitivePillarsSectionProps> = (
           </div>
 
           <p className="max-w-md text-ink-700 text-sm sm:text-base font-sans font-medium leading-relaxed">
-            Most brain training apps feel like spreadsheet chores. CAPSTONE treats cognitive stamina like a high-stakes survival puzzle.
+            Most brain training apps feel like spreadsheet chores. Neuro Playy treats cognitive stamina like a high-stakes survival puzzle.
           </p>
         </div>
 

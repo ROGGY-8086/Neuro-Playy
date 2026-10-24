@@ -28,6 +28,7 @@ import { ApiService, AuthUser } from '../../services/api';
 import { DailyGameStatus, DailyScoreHistory, GuardianProfileStatus } from '../../types';
 import { useSound } from '../../hooks/useSound';
 import { translations, SupportedLanguage } from '../../i18n/translations';
+import { MemoryGameSettingsSection } from './MemoryGameSettingsSection';
 
 interface ManagedProfile {
   id: number;
@@ -84,7 +85,7 @@ interface ObservationRecord {
 
 export const CaregiverDashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { soundEnabled, toggleSound, playSuccess, playNotice } = useSound(true);
+  const { soundEnabled, toggleSound, playSuccess, playNotice, playClick } = useSound(true);
 
   const [lang, setLang] = useState<SupportedLanguage>('EN');
   const t = translations[lang];
@@ -495,107 +496,22 @@ export const CaregiverDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* ================= Personalized Daily Memory Game & Scores ================= */}
+        {/* ================= Personalized Daily Memory Game Configuration & Scores ================= */}
         <div className="space-y-6">
-          {/* Daily Memory Game Banner Card */}
-          <div className="bg-white rounded-2xl border-2 border-stone-300 p-6 shadow-xs">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-3 flex-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-emerald-800" />
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono">
-                    Personalized Daily Exercise
-                  </span>
-                  {dailyGameStatus?.hasPlayedToday && (
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                      Completed Today
-                    </span>
-                  )}
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-extrabold text-ink-950">
-                    Daily Memory Game
-                  </h3>
-                  <p className="text-xs text-stone-600 mt-1 max-w-xl leading-relaxed">
-                    Up to 5 personalized multiple-choice questions dynamically generated every morning from your guardian profile. Helps stimulate episodic recall and reinforce familiarity.
-                  </p>
-                </div>
-
-                {/* Score or Play Action */}
-                <div className="pt-1 flex flex-wrap items-center gap-3">
-                  {dailyGameStatus?.hasPlayedToday ? (
-                    <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50/80 border border-emerald-300 text-emerald-950">
-                      <Award className="w-5 h-5 text-amber-700 shrink-0" />
-                      <div>
-                        <span className="text-xs text-stone-600 font-medium block">Today's Recorded Score:</span>
-                        <span className="text-base font-black text-emerald-900">
-                          {dailyGameStatus.todayScore} / 5 Correct
-                        </span>
-                      </div>
-                      <span className="text-xs text-emerald-800 pl-2 border-l border-emerald-200">
-                        Check back tomorrow for a new set of questions!
-                      </span>
-                    </div>
-                  ) : (
-                    <Link
-                      to="/daily-game"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm shadow-md transition-colors cursor-pointer"
-                    >
-                      <Sparkles className="w-4 h-4 text-amber-300" />
-                      <span>Play Today's Memory Game (5 Questions)</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              {/* Guardian Profile Quick Access Box */}
-              <div className="lg:w-80 p-4 rounded-xl bg-stone-50 border-2 border-stone-200 space-y-3 shrink-0">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-extrabold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-emerald-800" />
-                    Guardian Profile
-                  </span>
-                  {guardianProfileStatus?.profileComplete ? (
-                    <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
-                      Active
-                    </span>
-                  ) : (
-                    <span className="text-[11px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300">
-                      Incomplete
-                    </span>
-                  )}
-                </div>
-
-                <div className="text-xs text-stone-600 space-y-1">
-                  <div className="flex justify-between">
-                    <span>Family & Relatives:</span>
-                    <span className="font-bold text-stone-900">{guardianProfileStatus?.relativeCount || 0}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Life Milestones:</span>
-                    <span className="font-bold text-stone-900">{guardianProfileStatus?.lifeEventCount || 0}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Custom Questions:</span>
-                    <span className="font-bold text-stone-900">{guardianProfileStatus?.questionCount || 0}</span>
-                  </div>
-                </div>
-
-                <Link
-                  to="/guardian/setup"
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-stone-300 bg-white hover:bg-stone-100 text-xs font-bold text-stone-800 transition-colors shadow-2xs cursor-pointer"
-                >
-                  <Edit3 className="w-3.5 h-3.5 text-emerald-800" />
-                  <span>Configure Guardian Profile</span>
-                </Link>
-              </div>
-            </div>
-          </div>
+          {/* Memory Game Configuration Section (Caregiver Managed) */}
+          <MemoryGameSettingsSection
+            profileId={selectedProfileId}
+            profileName={activeProfile?.preferredName}
+            onSaved={async () => {
+              try {
+                const history = await ApiService.getDailyScoreHistory();
+                setDailyScoreHistory(history);
+              } catch (e) {
+                console.warn('Could not refresh score history:', e);
+              }
+            }}
+            soundFx={{ playSuccess, playNotice, playClick }}
+          />
 
           {/* Historical Progress & Scores Card */}
           <div className="bg-white rounded-2xl border-2 border-stone-300 p-6 shadow-xs space-y-5">

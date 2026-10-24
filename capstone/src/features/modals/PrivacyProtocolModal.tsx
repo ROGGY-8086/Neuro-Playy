@@ -12,7 +12,7 @@ interface PrivacyProtocolModalProps {
 export const PrivacyProtocolModal: React.FC<PrivacyProtocolModalProps> = ({
   isOpen,
   onClose,
-  title = 'CAPSTONE PRIVACY & NEURO PROTOCOL',
+  title = 'NEURO PLAYY PRIVACY & PROTOCOL',
 }) => {
   if (!isOpen) return null;
 
@@ -47,7 +47,7 @@ export const PrivacyProtocolModal: React.FC<PrivacyProtocolModalProps> = ({
             <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div>
               <strong className="text-ink-950 font-display block uppercase">Zero Ads & Zero Data Brokering</strong>
-              CAPSTONE is engineered as an ad-free cognitive health tool. User sessions and reaction telemetry are never commodified or sold to third parties.
+              Neuro Playy is engineered as an ad-free cognitive health tool. User sessions and reaction telemetry are never commodified or sold to third parties.
             </div>
           </div>
 

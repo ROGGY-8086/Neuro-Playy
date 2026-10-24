@@ -32,13 +32,13 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
           <a
             href="#hero"
             className="flex items-center gap-2 group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ink-950 rounded-lg p-0.5"
-            aria-label="CAPSTONE Cognitive Lab Home"
+            aria-label="Neuro Playy Home"
           >
             <div className="w-7 h-7 rounded-full bg-labYellow border-2 border-ink-950 flex items-center justify-center font-bold text-xs shadow-brutal transition-transform group-hover:scale-105">
               <span className="w-2.5 h-2.5 rounded-full bg-ink-950"></span>
             </div>
             <span className="font-display font-extrabold text-lg md:text-xl tracking-tight text-ink-950">
-              CAPSTONE
+              Neuro Playy
             </span>
           </a>
 
@@ -65,10 +65,10 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
 
         {/* Right Section: Live Telemetry Tickers & Controls */}
         <div className="hidden xl:flex items-center gap-6 text-[11px] font-mono">
-          {/* DUAL N-BACK VELOCITY */}
+          {/* MEMORY RECALL VELOCITY */}
           <div className="flex flex-col text-right">
             <span className="text-ink-500 font-medium tracking-wider uppercase text-[10px]">
-              DUAL N-BACK VELOCITY
+              MEMORY RECALL VELOCITY
             </span>
             <span className="font-bold text-ink-950">{telemetry.velocity}</span>
           </div>

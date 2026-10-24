@@ -24,17 +24,31 @@ public class DailyQuestionGeneratorService {
         private int index;
         private String questionText;
         private String category;
+        private String imageUrl;
         private String correctAnswer;
         private List<String> options = new ArrayList<>();
 
         public InternalQuestion() {}
 
         public InternalQuestion(int index, String questionText, String category, String correctAnswer, List<String> options) {
+            this(index, questionText, category, null, correctAnswer, options);
+        }
+
+        public InternalQuestion(int index, String questionText, String category, String imageUrl, String correctAnswer, List<String> options) {
             this.index = index;
             this.questionText = questionText;
             this.category = category;
+            this.imageUrl = imageUrl;
             this.correctAnswer = correctAnswer;
             this.options = options != null ? options : new ArrayList<>();
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
         }
 
         public int getIndex() {

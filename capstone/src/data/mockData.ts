@@ -27,15 +27,15 @@ export const cognitivePillars: CognitivePillar[] = [
   {
     id: 'pillar-1',
     number: '01',
-    title: 'DUAL N-BACK SPAN',
+    title: 'DAILY MEMORY GAME',
     iconName: 'target',
     description:
-      'Train simultaneous auditory and spatial buffers to keep three-tier data points ready in conscious memory without errors.',
+      'Personalized memory questions tailored by your caregiver about loved ones, treasured milestones, and familiar places.',
     metricLabel: 'RECALL GAIN',
     metricValue: '+48.2%',
     metricType: 'recall',
     accentColor: '#10B981',
-    drillType: 'dual-n-back',
+    drillType: 'daily-game',
   },
   {
     id: 'pillar-2',
@@ -187,7 +187,7 @@ export const cohortTestimonials: CohortTestimonial[] = [
   {
     id: 'test-1',
     quote:
-      'I used to open browser tabs and instantly forget why. Two weeks into 10-day CAPSTONE and the cognitive reset is completely gone.',
+      'I used to open browser tabs and instantly forget why. Two weeks into 10-day Neuro Playy and the cognitive reset is completely gone.',
     name: 'DR. AMIE THORNE',
     title: 'Design Systems Architect',
     avatar: 'AT',

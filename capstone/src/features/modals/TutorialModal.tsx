@@ -57,7 +57,7 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({
       >
         <div className="bg-parchment-100 border-b-2 border-ink-950 p-4 flex items-center justify-between">
           <span className="font-mono font-bold text-xs uppercase tracking-wider text-ink-950">
-            [ CAPSTONE TUTORIAL PROTOCOL ]
+            [ NEURO PLAYY TUTORIAL PROTOCOL ]
           </span>
           <button
             onClick={() => {

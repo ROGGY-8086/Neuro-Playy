@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onOpenProtocol })
         {/* Left credits */}
         <div className="text-center md:text-left">
           <span>Made with devotion for </span>
-          <strong className="text-ink-950 font-bold">CAPSTONE LAB</strong>
+          <strong className="text-ink-950 font-bold">NEURO PLAYY</strong>
           <span> — Inspired by high-gain cognitive architecture.</span>
         </div>
 
