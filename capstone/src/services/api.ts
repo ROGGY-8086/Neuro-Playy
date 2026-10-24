@@ -584,12 +584,14 @@ export const ApiService = {
   },
 
   // Memory Game Configuration API (Caregiver Managed)
-  async getMemoryGameConfig(profileId: number): Promise<MemoryGameConfig> {
-    return request<MemoryGameConfig>(`/profiles/${profileId}/memory-game-config`);
+  async getMemoryGameConfig(profileId?: number | null): Promise<MemoryGameConfig> {
+    const url = profileId && profileId > 0 ? `/profiles/${profileId}/memory-game-config` : '/memory-game-config';
+    return request<MemoryGameConfig>(url);
   },
 
-  async saveMemoryGameConfig(profileId: number, questions: MemoryGameQuestion[]): Promise<MemoryGameConfig> {
-    return request<MemoryGameConfig>(`/profiles/${profileId}/memory-game-config`, {
+  async saveMemoryGameConfig(profileId: number | null | undefined, questions: MemoryGameQuestion[]): Promise<MemoryGameConfig> {
+    const url = profileId && profileId > 0 ? `/profiles/${profileId}/memory-game-config` : '/memory-game-config';
+    return request<MemoryGameConfig>(url, {
       method: 'PUT',
       body: JSON.stringify(questions),
     });

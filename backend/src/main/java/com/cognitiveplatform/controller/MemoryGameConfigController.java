@@ -27,19 +27,19 @@ public class MemoryGameConfigController {
         this.ownershipService = ownershipService;
     }
 
-    @GetMapping("/profiles/{id}/memory-game-config")
+    @GetMapping({"/profiles/{id}/memory-game-config", "/memory-game-config"})
     @Operation(summary = "Get memory game question configuration for player profile (Caregiver only)")
     public ResponseEntity<MemoryGameConfigDto> getConfig(
-            @PathVariable("id") Long id,
+            @PathVariable(value = "id", required = false) Long id,
             @AuthenticationPrincipal UserPrincipal principal) {
         ownershipService.verifyCaregiverRole(principal);
         return ResponseEntity.ok(configService.getConfig(id, principal.getId()));
     }
 
-    @PutMapping("/profiles/{id}/memory-game-config")
+    @PutMapping({"/profiles/{id}/memory-game-config", "/memory-game-config"})
     @Operation(summary = "Save or update exactly 5 memory game questions for player profile (Caregiver only)")
     public ResponseEntity<MemoryGameConfigDto> saveConfig(
-            @PathVariable("id") Long id,
+            @PathVariable(value = "id", required = false) Long id,
             @Valid @RequestBody List<MemoryGameQuestionDto> questions,
             @AuthenticationPrincipal UserPrincipal principal) {
         ownershipService.verifyCaregiverRole(principal);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Sparkles,
   Plus,
@@ -12,7 +13,8 @@ import {
   HelpCircle,
   Wand2,
   RefreshCw,
-  Eye
+  Eye,
+  LogOut
 } from 'lucide-react';
 import { ApiService } from '../../services/api';
 import { MemoryGameQuestion, MemoryGameConfig } from '../../types';
@@ -75,22 +77,17 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
   const [questions, setQuestions] = useState<MemoryGameQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string; isAuthError?: boolean } | null>(null);
   const [previewImageIdx, setPreviewImageIdx] = useState<number | null>(null);
 
-  // Load configured questions for selected profile
+  // Load configured questions for selected profile or current caregiver
   useEffect(() => {
-    if (!profileId) {
-      setQuestions([]);
-      return;
-    }
-
     let isMounted = true;
     async function fetchConfig() {
       setIsLoading(true);
       setStatusMessage(null);
       try {
-        const config: MemoryGameConfig = await ApiService.getMemoryGameConfig(profileId!);
+        const config: MemoryGameConfig = await ApiService.getMemoryGameConfig(profileId);
         if (!isMounted) return;
         if (config && config.questions && config.questions.length > 0) {
           // Normalize options to always ensure 4 slots for easy editing
@@ -232,11 +229,11 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
   };
 
   const validationError = validateQuestions();
-  const canSave = !validationError && !isSaving && !!profileId;
+  const canSave = !validationError && !isSaving;
 
   // Save Configuration
   const handleSave = async () => {
-    if (!profileId || validationError) {
+    if (validationError) {
       soundFx?.playNotice();
       return;
     }
@@ -271,10 +268,19 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
       onSaved?.();
     } catch (err: unknown) {
       soundFx?.playNotice();
-      const msg = err instanceof Error ? err.message : 'Failed to save memory game settings.';
+      const rawMsg = err instanceof Error ? err.message : 'Failed to save memory game settings.';
+      const isAuth =
+        rawMsg.toLowerCase().includes('authorized') ||
+        rawMsg.toLowerCase().includes('forbidden') ||
+        rawMsg.toLowerCase().includes('permission') ||
+        rawMsg.toLowerCase().includes('caregiver');
+
       setStatusMessage({
         type: 'error',
-        text: msg,
+        text: isAuth
+          ? 'Access to this caregiver profile was not authorized. Please make sure you are signed in with your caregiver account.'
+          : rawMsg,
+        isAuthError: isAuth,
       });
     } finally {
       setIsSaving(false);
@@ -352,7 +358,20 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
           ) : (
             <AlertCircle className="w-4 h-4 text-red-700 shrink-0 mt-0.5" />
           )}
-          <div className="flex-1">{statusMessage.text}</div>
+          <div className="flex-1 space-y-2">
+            <div>{statusMessage.text}</div>
+            {statusMessage.isAuthError && (
+              <div className="pt-1 flex items-center gap-2">
+                <Link
+                  to="/caregiver/login"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-800 hover:bg-red-900 text-white font-bold text-[11px] shadow-2xs transition-colors"
+                >
+                  <LogOut className="w-3 h-3" />
+                  <span>Sign In as Caregiver</span>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -456,7 +475,7 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
                     type="text"
                     value={q.questionText}
                     onChange={(e) => handleUpdateQuestion(qIdx, 'questionText', e.target.value)}
-                    placeholder="e.g., What is your grandson's name?"
+                    placeholder="e.g., What is your favourite sport?"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 bg-white text-ink-950 text-xs font-medium focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 outline-none"
                   />
                 </div>
@@ -520,7 +539,7 @@ export const MemoryGameSettingsSection: React.FC<MemoryGameSettingsSectionProps>
                   type="text"
                   value={q.correctAnswer}
                   onChange={(e) => handleUpdateQuestion(qIdx, 'correctAnswer', e.target.value)}
-                  placeholder="e.g., Liam"
+                  placeholder="e.g., Badminton"
                   className="w-full px-3.5 py-2.5 rounded-xl border-2 border-emerald-300 bg-emerald-50/40 text-emerald-950 text-xs font-bold focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 outline-none"
                 />
               </div>

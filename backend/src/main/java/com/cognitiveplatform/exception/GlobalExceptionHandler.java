@@ -51,10 +51,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ForbiddenOperationException.class, AccessDeniedException.class})
     public ResponseEntity<ErrorResponse> handleForbidden(Exception ex, HttpServletRequest request) {
+        String message = (ex.getMessage() != null && !ex.getMessage().isBlank())
+                ? ex.getMessage()
+                : "Access to the requested resource is not authorized";
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.FORBIDDEN.value(),
                 "Forbidden",
-                "Access to the requested resource is not authorized",
+                message,
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
