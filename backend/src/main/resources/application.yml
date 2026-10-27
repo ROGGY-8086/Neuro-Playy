@@ -47,7 +47,7 @@ app:
     secret: ${JWT_SECRET:c3VwZXJzZWNyZXRqd3RrZXlmaXJzdGNvZ25pdGl2ZXBsYXRmb3JtMjAyNmZvcm1lbW9yeQ==}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000,https://capstone-liart-pi.vercel.app}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000,https://neuro-playy.vercel.app,https://capstone-liart-pi.vercel.app}
   storage:
     upload-dir: ${UPLOAD_DIR:/tmp/uploads/media}
     max-image-size-bytes: 5242880 # 5 MB

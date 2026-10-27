@@ -1,8 +1,8 @@
-# Fluxi — Cognitive Stamina & Focus Lab
+# Neuro Playy — Cognitive Stamina & Focus Lab
 
 An interactive, responsive cognitive training and memory assistance platform designed to improve working memory, attention, and cognitive endurance through adaptive drills and cultural familiarity.
 
-> **🚀 Live Production Website (Vercel):** **[https://capstone-liart-pi.vercel.app](https://capstone-liart-pi.vercel.app)**
+> **🚀 Live Production Website (Vercel):** **[https://neuro-playy.vercel.app](https://neuro-playy.vercel.app)**
 >
 > **🌐 Live Local Preview:** Click to view locally at **[http://localhost:5173](http://localhost:5173)** *(when running `npm run dev`)*
 
